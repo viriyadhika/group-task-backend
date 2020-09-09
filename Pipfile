@@ -9,6 +9,7 @@ verify_ssl = true
 django = "*"
 djangorestframework = "*"
 pylint-django = "*"
+django-linter = "*"
 
 [requires]
 python_version = "3.8"

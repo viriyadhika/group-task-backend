@@ -5,11 +5,20 @@ from django.contrib.auth.models import User
 
 class Group(models.Model):
     name = models.CharField(max_length=150)
+    members = models.ManyToManyField(
+        User,
+        related_name='my_groups'
+    )
 
 class Task(models.Model):
     name = models.CharField(max_length=150)
     desc = models.TextField(max_length=500)
-    group = models.ManyToManyField(Group)
+    group = models.ForeignKey(
+        Group,
+        on_delete = models.CASCADE,
+        null = True,
+        blank = True
+    )
     in_charge = models.ForeignKey(
         User,
         on_delete = models.CASCADE
