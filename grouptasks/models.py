@@ -17,7 +17,8 @@ class Task(models.Model):
         Group,
         on_delete = models.CASCADE,
         null = True,
-        blank = True
+        blank = True,
+        related_name='group_tasks'
     )
     in_charge = models.ForeignKey(
         User,
