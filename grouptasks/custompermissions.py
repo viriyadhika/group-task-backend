@@ -8,3 +8,11 @@ class IsInTaskGroup(BasePermission):
 class IsGroupMember(BasePermission):
     def has_object_permission(self, request, view, group):
         return request.user in group.members.all()
+
+class IsPersonEnteringGroup(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.pk == request.data['user']
+
+class IsPersonInTheGroup(BasePermission):
+    def has_object_permission(self, request, view, membership):
+        return request.user == membership.user

@@ -7,6 +7,8 @@ from grouptasks.views import (
     GroupDetail,
     TaskCreate,
     TaskDetail,
+    MembershipCreate,
+    MembershipDetail,
 )
 
 urlpatterns = [
@@ -17,4 +19,6 @@ urlpatterns = [
     path('groups/<int:pk>/', GroupDetail.as_view(), name=GroupDetail.name),
     path('tasks/create', TaskCreate.as_view(), name=TaskCreate.name),
     path('tasks/<int:pk>/', TaskDetail.as_view(), name=TaskDetail.name),
+    path('memberships/create/', MembershipCreate.as_view(), name=MembershipCreate.name),
+    path('memberships/<int:pk>/', MembershipDetail.as_view(), name=MembershipDetail.name),
 ]

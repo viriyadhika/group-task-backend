@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from grouptasks.models import Group, Task
+from grouptasks.models import Group, Task, Membership
 
 class UserSerializer(serializers.ModelSerializer):
     my_groups = serializers.HyperlinkedRelatedField(
@@ -42,16 +42,6 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 class TaskSerializer(serializers.HyperlinkedModelSerializer):
-    group = serializers.HyperlinkedRelatedField(
-        read_only=True,
-        view_name = 'group-detail'
-    )
-
-    in_charge = serializers.HyperlinkedRelatedField(
-        read_only = True,
-        view_name = 'user-detail'
-    )
-
     class Meta:
         model = Task
         fields = (
@@ -62,4 +52,12 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
             'in_charge',
             'due_date',
             'is_done',
+        )
+
+class MembershipSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Membership
+        fields = (
+            'user',
+            'group',
         )
