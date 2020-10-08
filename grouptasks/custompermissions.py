@@ -13,6 +13,10 @@ class IsPersonEnteringGroup(BasePermission):
     def has_permission(self, request, view):
         return request.user.pk == request.data['user']
 
+class IsTaskInCharge(BasePermission):
+    def has_object_permission(self, request, view, user):
+        return request.user == user
+
 class IsPersonInTheGroup(BasePermission):
     def has_object_permission(self, request, view, membership):
         return request.user == membership.user

@@ -36,7 +36,8 @@ class Task(models.Model):
     )
     in_charge = models.ForeignKey(
         User,
-        on_delete = models.CASCADE
+        on_delete = models.CASCADE,
+        related_name='my_tasks'
     )
     due_date = models.DateField()
     is_done = models.BooleanField(

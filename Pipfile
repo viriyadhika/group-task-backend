@@ -9,7 +9,9 @@ verify_ssl = true
 django = "*"
 djangorestframework = "*"
 pylint-django = "*"
-django-linter = "*"
+django-cors-headers = "*"
+djangorestframework-simplejwt = "*"
+django-filter = "*"
 
 [requires]
 python_version = "3.8"
