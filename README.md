@@ -12,7 +12,7 @@ Show the list of all users. This feature is only for debugging purposes.
 
 **Endpoint:** `GET /users`
 
-**Permission:** Only superadmin can perform this request
+**Permission:** Only superuser can perform this request
 
 **Sample Success Response (Only Data):** 
 
@@ -270,6 +270,7 @@ A valid task is defined as:
     "in_charge": {
         "pk": 3,
     },
+    "due_date": "2020-08-07"
 }
 ```
 

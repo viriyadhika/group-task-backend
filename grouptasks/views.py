@@ -7,15 +7,19 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User
 
 from grouptasks.serializers import (
-    UserSerializer, 
+    UserSerializer,
+    MyGroupSerializer,
     GroupSerializer,
+    GroupSummarySerializer,
     TaskSerializer,
-    TaskListofAUserSerializer,
+    MyTasksSerializer,
     CreateTaskSerializer,
     MembershipSerializer,
 )
 from grouptasks.models import Group, Task, Membership
 from grouptasks.custompermissions import (
+    IsSuperUser,
+    IsTheUser,
     IsInTaskGroup, 
     IsGroupMember,
     IsPersonEnteringGroup,
@@ -28,24 +32,43 @@ class ApiRoot(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         return Response({
             'users' : reverse(UserList.name, request=request),
-            'groups' : reverse(GroupList.name, request=request),
+            'tasks' : reverse(TaskCreate.name, request=request),
         })
 
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     name = 'user-list'
-    filter_fields = ('username',)
+    permission_classes = (
+        permissions.IsAuthenticated,
+        IsSuperUser,
+    )
 
 class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     name = 'user-detail'
+    permission_classes = (
+        permissions.IsAuthenticated,
+        IsTheUser,
+    )
 
-class GroupList(generics.ListCreateAPIView):
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
+class MyGroups(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = MyGroupSerializer
     name = 'group-list'
+    permission_classes = (
+        permissions.IsAuthenticated,
+        IsTheUser,
+    )
+
+class Groups(generics.CreateAPIView):
+    queryset = Group.objects.all()
+    serializer_class = GroupSummarySerializer
+    name = 'group-create'
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
 
 class GroupDetail(generics.RetrieveDestroyAPIView):
     queryset = Group.objects.all()
@@ -64,20 +87,12 @@ class TaskCreate(generics.CreateAPIView):
         IsInTaskGroup,
     )
 
-class TaskListofAUser(generics.RetrieveAPIView):
+class MyTasks(generics.RetrieveAPIView):
     queryset = User.objects.all()
-    serializer_class = TaskListofAUserSerializer
+    serializer_class = MyTasksSerializer
     name = 'task_list'
     permission_classes = (
         IsTaskInCharge,
-    )
-
-class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Task.objects.all()
-    serializer_class = TaskSerializer
-    name = 'task-detail'
-    permission_classes = (
-        IsInTaskGroup,
     )
 
 class MembershipsList(generics.ListCreateAPIView):

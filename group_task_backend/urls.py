@@ -26,6 +26,5 @@ urlpatterns = [
          jwt_views.TokenRefreshView.as_view(), 
          name ='token_refresh'), 
     path('admin/', admin.site.urls),
-    path('', include('grouptasks.urls')),
-    path('api-auth/', include('rest_framework.urls')),
+    path('/', include('grouptasks.urls')),
 ]
