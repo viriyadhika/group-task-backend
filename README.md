@@ -35,6 +35,26 @@ Show the list of all users. This feature is only for debugging purposes.
 }
 ```
 
+### Get User Data from Username
+
+With the username as a parameter, return the user data
+
+**Endpoint:** `GET /users/<username>`
+
+**Permission:** Only the user himself can get his own data
+
+**Sample Success Response (Only Data):**
+``` json
+{
+    "data": {
+        "url": "/users/3",
+        "pk": 3,
+        "username": "johnDoe",
+        "email": "johnDoe@me.com",
+    }
+}
+```
+
 ### Create a User
 
 Create a new user based on the given username, email and password. It's important to turn on the HTTPS encription.
@@ -55,11 +75,21 @@ Create a new user based on the given username, email and password. It's importan
 
 **Success Response:** Response Status 201 (Created)
 
+**Error Response:**
+1. Username or password is empty. Status code = 400
+    ```json
+    ["Username and password can't be empty"]
+    ```
+2. Username is taken. Status code = 400
+    ```json
+    ["Username is taken"]
+    ```
+
 ### Retrieve Users Detail
 
 **Endpoint:** `GET /users/<id>`
 
-**Permission:** Only the user can view their own user detail. For now the app doesn't support updating or deleting a user detail.
+**Permission:** No permission is required. For now the app doesn't support updating or deleting a user.
 
 **Sample Success Response (Data):**
 
@@ -109,12 +139,17 @@ Get the list of all groups that a user is currently a part of. Group data is pre
     }
 }
 ```
-### Add Person to Group
+### Add a Person to Group
 **Endpoint** `PUT /groups/<group_id>/users/<user_id>`
 
 **Permission:** The user must be the member of the group to add new member to the group
 
 **Success Response:** Request Status 201 (Created)
+
+### Remove Person from a Group
+**Endpoint** `DELETE /groups/<group_id>/users/<user_id>`
+
+**Permission** The user must be the member of the group
 
 ### Create a Group
 By default, the user will be in the group they have created.

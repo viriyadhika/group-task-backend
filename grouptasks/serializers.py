@@ -3,6 +3,16 @@ from rest_framework import serializers
 
 from grouptasks.models import Group, Task, Membership
 
+class UserModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'pk',
+            'username',
+            'email',
+        )
+
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
@@ -77,7 +87,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 class MyGroupSerializer(serializers.HyperlinkedModelSerializer):
-    my_groups = GroupSummarySerializer()
+    my_groups = GroupSummarySerializer(many=True)
     
     class Meta:
         model = User
@@ -89,10 +99,6 @@ class MyGroupSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 class MembershipSerializer(serializers.ModelSerializer):
-    user = serializers.SlugRelatedField(
-        slug_field='username',
-        queryset=User.objects.all(),
-    )
     class Meta:
         model = Membership
         fields = (
