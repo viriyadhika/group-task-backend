@@ -31,6 +31,7 @@ from grouptasks.custompermissions import (
     IsPersonInTheGroup,
 )
 
+# Need to add sorting mechanism
 class ApiRoot(generics.GenericAPIView):
     name = 'api-root'
     def get(self, request, *args, **kwargs):
@@ -119,6 +120,18 @@ class Groups(generics.CreateAPIView):
     permission_classes = (
         permissions.IsAuthenticated,
     )
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        group_instance = self.perform_create(serializer)
+        group_instance.members.set([request.user])
+        group_instance.save()
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        return instance
 
 class GroupDetail(generics.RetrieveDestroyAPIView):
     queryset = Group.objects.all()
@@ -162,7 +175,7 @@ class AddRemoveMembership(generics.GenericAPIView):
         IsPersonInTheGroup,
     )
     serializer_class = MembershipSerializer
-    name = 'membership-add-remove'
+    name = 'membership-detail'
     
     def get_object(self):
         membership = Membership.objects.get(user=self.kwargs['user_pk'], group=self.kwargs['group_pk'])
@@ -181,9 +194,7 @@ class AddRemoveMembership(generics.GenericAPIView):
     def delete(self, request, *args, **kwargs):
         membership_to_delete = self.get_object()
 
-        all_person_in_charges = []
-        for task in self.get_object().group.group_tasks.all():
-            all_person_in_charges.append(task.in_charge)
+        all_person_in_charges = [task.in_charge for task in self.get_object().group.group_tasks.all()]
 
         if membership_to_delete.user in all_person_in_charges:
             return Response({'detail': 'Person in charge still have to do' }, status=status.HTTP_400_BAD_REQUEST)
