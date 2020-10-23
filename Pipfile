@@ -12,6 +12,8 @@ pylint-django = "*"
 django-cors-headers = "*"
 djangorestframework-simplejwt = "*"
 django-filter = "*"
+gunicorn = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.8"
