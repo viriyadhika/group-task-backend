@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', False)
 
 ALLOWED_HOSTS = []
 
@@ -50,10 +50,10 @@ INSTALLED_APPS = [
     'grouptasks.apps.GrouptasksConfig',
 ]
 
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000',
-    'http://localhost:8000',
-)
+if (DEBUG):
+    CORS_ORIGIN_WHITELIST = ('http://localhost:3000', 'http://localhost:1337','http://localhost:8000')
+else:
+    CORS_ORIGIN_WHITELIST = ('grouptask.viriyadhika.com', 'grouptaskapi.viriyadhika.com')
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES' : (
@@ -107,9 +107,9 @@ DATABASES = {
         'PASSWORD': os.environ['DB_PASSWORD'],
         'HOST': 'db',
         'PORT': 5432,
-    }
-}
-
+    }   
+}   
+    
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

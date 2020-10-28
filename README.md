@@ -1,10 +1,8 @@
 # Group Task API
 
-This is an API backend for a group task application. The API can be accessed in **this website (replace when finalized)**. It support the following functionalities.
+This is an API backend for a group task application. The API can be accessed [here](grouptaskapi.viriyadhika.com). It is implemented by the front end application as can be accessed [here](grouptask.viriyadhika.com). It support the following functionalities.
 
 ## Users
-
----
 
 ### Retrieve Users List
 
@@ -63,7 +61,7 @@ Create a new user based on the given username, email and password. It's importan
 
 **Permission:** No permission is required to create a new user
 
-**Sample Request Payload**
+**Sample Request Body**
 
 ``` json
 {
@@ -105,8 +103,6 @@ Create a new user based on the given username, email and password. It's importan
 ```
 
 ## Groups
-
----
 
 ### My Groups
 
@@ -158,7 +154,7 @@ By default, the user will be in the group they have created.
 
 **Permission:** A user must be authenticated to create a group.
 
-**Request Payload:**
+**Sample Request Body:**
 ```json
 {
     "name": "Biology Group Project",
@@ -222,8 +218,6 @@ Contains the detail of a group, including the tasks as well as the members of th
 ```
 
 ## Tasks
-
----
 
 ### My Tasks
 Due date is formatted as `YYYY/MM/DD`.
@@ -294,7 +288,7 @@ A valid task is defined as:
 
 **Permission:** The user must be a member of the group which they create the task for.
 
-**Sample Request Payload:**
+**Sample Request Body:**
 ```json
 {
     "name": "Create slides",
