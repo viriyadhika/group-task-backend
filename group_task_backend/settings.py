@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', False)
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -51,7 +51,7 @@ INSTALLED_APPS = [
 ]
 
 if (DEBUG):
-    CORS_ORIGIN_WHITELIST = ('http://localhost:3000', 'http://localhost:1337','http://localhost:8000')
+    CORS_ORIGIN_WHITELIST = ('https://grouptask.viriyadhika.com', 'https://grouptaskapi.viriyadhika.com','http://localhost:3000', 'http://localhost:1337','http://localhost:8000')
 else:
     CORS_ORIGIN_WHITELIST = ('grouptask.viriyadhika.com', 'grouptaskapi.viriyadhika.com')
 
