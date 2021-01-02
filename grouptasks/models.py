@@ -11,6 +11,8 @@ class Group(models.Model):
         related_name='my_groups',
         through='Membership'
     )
+    class Meta:
+        ordering = ['name',]
 
 class Membership(models.Model):
     user = models.ForeignKey(
@@ -43,6 +45,9 @@ class Task(models.Model):
     is_done = models.BooleanField(
         default=False
     )
+    class Meta:
+        ordering = ['-due_date', 'name']
+
     def clean(self, *args, **kwargs):
         if self.in_charge not in self.group.members.all():
             raise ValidationError("The in charge doesn't belong to this group")

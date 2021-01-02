@@ -1,6 +1,46 @@
 # Group Task API
 
-This is an API backend for a group task application. The API can be accessed [here](grouptaskapi.viriyadhika.com). It is implemented by the front end application as can be accessed [here](grouptask.viriyadhika.com). It support the following functionalities.
+This is an API backend for a group task application. The API can be accessed [here](https://grouptaskapi.viriyadhika.com). It is implemented by the front end application as can be accessed [here](https://grouptask.viriyadhika.com). It support the following functionalities.
+
+## Authentication
+This API is using JWT Authentication. To authenticate:
+
+1. **Endpoint:** `POST /api/token`
+
+    **Sample Request Body**
+
+    ``` json
+    {
+        "username": "johnDoe",
+        "password": "password123",
+    }
+    ```
+
+    **Expected Response**
+    ```json
+    {
+        "access": <access token>,
+        "refresh": <refresh token>
+    }
+    ```
+
+2. **Endpoint** `POST /api/token/refresh`
+
+    **Sample Request Body**
+
+    ```json
+    {
+        "refresh": <refresh token>
+    }
+    ```
+
+    **Expected Response**
+
+    ```json
+    {
+        "access" <access token>
+    }
+    ```
 
 ## Users
 
@@ -220,7 +260,7 @@ Contains the detail of a group, including the tasks as well as the members of th
 ## Tasks
 
 ### My Tasks
-Due date is formatted as `YYYY/MM/DD`.
+Due date is formatted as `YYYY-MM-DD`.
 
 **Endpoint:** `GET /users/<id>/tasks`
 
@@ -293,14 +333,12 @@ A valid task is defined as:
 {
     "name": "Create slides",
     "desc": "5 pages of slides regarding penguin diets and their habitat",
-    "group": {
-        "pk": 2,
-    },
-    "in_charge": {
-        "pk": 3,
-    },
+    "group": 2,
+    "in_charge": 3,
     "due_date": "2020-08-07"
 }
 ```
+
+Here, ```group: 2``` means that we are adding the task for the group with a primary key of 2. As per point no. 3 in the valid task criteria, it means that the user creating the task must be a member of group 2. ```in_charge: 3``` means that user with primary key of 3 is in charge of completing this task. The task is valid if user 3 is also a member of group 2.
 
 **Response:** Response status 201 (Created)

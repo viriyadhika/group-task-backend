@@ -133,7 +133,7 @@ class Groups(generics.CreateAPIView):
         instance = serializer.save()
         return instance
 
-class GroupDetail(generics.RetrieveDestroyAPIView):
+class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     name = 'group-detail'
@@ -194,12 +194,15 @@ class AddRemoveMembership(generics.GenericAPIView):
     def delete(self, request, *args, **kwargs):
         membership_to_delete = self.get_object()
 
-        all_person_in_charges = [task.in_charge for task in self.get_object().group.group_tasks.all()]
+        all_person_in_charges = [task.in_charge for task in membership_to_delete.group.group_tasks.all()]
 
         if membership_to_delete.user in all_person_in_charges:
-            return Response({'detail': 'Person in charge still have to do' }, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            membership_to_delete.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-            
+            return Response({'detail': 'This user is still in charge of some tasks' }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if (membership_to_delete.group.members.all().count() == 1):
+            return Response({'detail': 'This user is the last member of the group. Please delete the group instead!'}, status=status.HTTP_400_BAD_REQUEST)
+
+        membership_to_delete.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 # Create your views here.
